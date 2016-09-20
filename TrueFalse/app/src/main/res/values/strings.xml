@@ -4,4 +4,7 @@
     <string name="true_text">True</string>
     <string name="correct">You are correct!</string>
     <string name="wrong">You are wrong!</string>
+    <string name="next">Next</string>
+    <string name="cheat">Cheat</string>
+    <string name="back">Back</string>
 </resources>

@@ -1,20 +1,22 @@
-package edu.chapman.cpsc356.truefalse;
+package edu.chapman.cpsc356.truefalse.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.util.Random;
 
+import edu.chapman.cpsc356.truefalse.R;
 import edu.chapman.cpsc356.truefalse.models.Question;
 
 public class MainActivity extends AppCompatActivity
 {
+    private final String LOGTAG = "MainActivity";
 
     private TextView questionTextView;
     private View mainView;
@@ -38,6 +40,58 @@ public class MainActivity extends AppCompatActivity
         this.mainView = findViewById(R.id.ll_main);
 
         nextQuestion();
+
+        Log.d(LOGTAG, "onCreate()");
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+
+        Log.d(LOGTAG, "onStart()");
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+
+        Log.d(LOGTAG, "onResume()");
+
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        Log.d(LOGTAG, "onPause()");
+
+    }
+
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        Log.d(LOGTAG, "onStop()");
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+        Log.d(LOGTAG, "onDestroy()");
+    }
+
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+
+        Log.d(LOGTAG, "onRestart()");
+
     }
 
     public void falseTapped(View view)
@@ -48,6 +102,17 @@ public class MainActivity extends AppCompatActivity
     public void trueTapped(View view)
     {
         answerTapped(true);
+    }
+
+    public void nextTapped(View view)
+    {
+        nextQuestion();
+    }
+
+    public void cheatTapped(View view)
+    {
+        Intent cheatIntent = new Intent(this, CheatActivity.class);
+        startActivity(cheatIntent);
     }
 
     private void answerTapped(boolean attemptedAnswer)
@@ -62,8 +127,6 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, R.string.wrong, Toast.LENGTH_SHORT).show();
             this.mainView.setBackgroundColor(Color.RED);
         }
-
-        nextQuestion();
     }
 
     private void nextQuestion()
@@ -71,5 +134,9 @@ public class MainActivity extends AppCompatActivity
         int randomIdx = new Random().nextInt(this.questions.length);
         this.currentQuestion = this.questions[randomIdx];
         this.questionTextView.setText(currentQuestion.getText());
+
+        this.mainView.setBackgroundColor(Color.WHITE);
     }
+
+
 }

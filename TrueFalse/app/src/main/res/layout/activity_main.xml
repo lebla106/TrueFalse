@@ -11,7 +11,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context="edu.chapman.cpsc356.truefalse.MainActivity">
+    tools:context="edu.chapman.cpsc356.truefalse.activities.MainActivity">
 
     <TextView
         android:id="@+id/tv_question"
@@ -44,6 +44,20 @@
             />
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="cheatTapped"
+        android:text="@string/cheat"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableEnd="@drawable/arrow_right"
+        android:onClick="nextTapped"
+        android:text="@string/next"/>
+
 
 
 </LinearLayout>
