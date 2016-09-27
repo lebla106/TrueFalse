@@ -17,11 +17,13 @@ import edu.chapman.cpsc356.truefalse.models.Question;
 public class MainActivity extends AppCompatActivity
 {
     private final String LOGTAG = "MainActivity";
+    private final String KEY_QUESTION_IDX = "question_idx";
 
     private TextView questionTextView;
     private View mainView;
 
-    private Question currentQuestion;
+    private int questionIndex;
+
     private Question[] questions = new Question[] {
             new Question("Life is worth it", true),
             new Question("A tomato is a fruit", true),
@@ -39,9 +41,30 @@ public class MainActivity extends AppCompatActivity
         this.questionTextView = (TextView) findViewById(R.id.tv_question);
         this.mainView = findViewById(R.id.ll_main);
 
+        if (savedInstanceState == null)
+        {
+            // Created for the first time
+            questionIndex = new Random().nextInt(this.questions.length);
+        }
+        else
+        {
+            // Recreated after rotation
+            questionIndex = savedInstanceState.getInt(KEY_QUESTION_IDX);
+        }
+
         nextQuestion();
 
         Log.d(LOGTAG, "onCreate()");
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        Log.d(LOGTAG, "onSavedInstanceState()");
+
+        outState.putInt(KEY_QUESTION_IDX, this.questionIndex);
     }
 
     @Override
@@ -106,6 +129,7 @@ public class MainActivity extends AppCompatActivity
 
     public void nextTapped(View view)
     {
+        questionIndex = new Random().nextInt(this.questions.length);
         nextQuestion();
     }
 
@@ -117,7 +141,8 @@ public class MainActivity extends AppCompatActivity
 
     private void answerTapped(boolean attemptedAnswer)
     {
-        if (this.currentQuestion.getAnswer() == attemptedAnswer)
+        Question currentQuestion = this.questions[questionIndex];
+        if (currentQuestion.getAnswer() == attemptedAnswer)
         {
             Toast.makeText(this, R.string.correct, Toast.LENGTH_SHORT).show();
             this.mainView.setBackgroundColor(Color.GREEN);
@@ -131,8 +156,7 @@ public class MainActivity extends AppCompatActivity
 
     private void nextQuestion()
     {
-        int randomIdx = new Random().nextInt(this.questions.length);
-        this.currentQuestion = this.questions[randomIdx];
+        Question currentQuestion = this.questions[questionIndex];
         this.questionTextView.setText(currentQuestion.getText());
 
         this.mainView.setBackgroundColor(Color.WHITE);
