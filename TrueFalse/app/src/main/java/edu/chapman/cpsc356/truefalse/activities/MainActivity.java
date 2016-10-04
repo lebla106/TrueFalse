@@ -19,10 +19,14 @@ public class MainActivity extends AppCompatActivity
     private final String LOGTAG = "MainActivity";
     private final String KEY_QUESTION_IDX = "question_idx";
 
+    public static final int REQUEST_CHEATED = 1000;
+
     private TextView questionTextView;
     private View mainView;
 
     private int questionIndex;
+
+    private boolean cheated = false;
 
     private Question[] questions = new Question[] {
             new Question("Life is worth it", true),
@@ -55,6 +59,17 @@ public class MainActivity extends AppCompatActivity
         nextQuestion();
 
         Log.d(LOGTAG, "onCreate()");
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CHEATED)
+        {
+            this.cheated = (resultCode == RESULT_OK);
+        }
     }
 
     @Override
@@ -135,8 +150,8 @@ public class MainActivity extends AppCompatActivity
 
     public void cheatTapped(View view)
     {
-        Intent cheatIntent = new Intent(this, CheatActivity.class);
-        startActivity(cheatIntent);
+        Question currentQuestion = this.questions[questionIndex];
+        startActivityForResult(CheatActivity.GetIntent(currentQuestion, this), REQUEST_CHEATED);
     }
 
     private void answerTapped(boolean attemptedAnswer)
@@ -144,18 +159,36 @@ public class MainActivity extends AppCompatActivity
         Question currentQuestion = this.questions[questionIndex];
         if (currentQuestion.getAnswer() == attemptedAnswer)
         {
-            Toast.makeText(this, R.string.correct, Toast.LENGTH_SHORT).show();
+            if (this.cheated)
+            {
+                Toast.makeText(this, R.string.correct_cheated, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, R.string.correct, Toast.LENGTH_SHORT).show();
+            }
+
             this.mainView.setBackgroundColor(Color.GREEN);
         }
         else
         {
-            Toast.makeText(this, R.string.wrong, Toast.LENGTH_SHORT).show();
+            if (this.cheated)
+            {
+                Toast.makeText(this, R.string.wrong_cheated, Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                Toast.makeText(this, R.string.wrong, Toast.LENGTH_SHORT).show();
+            }
+
             this.mainView.setBackgroundColor(Color.RED);
         }
     }
 
     private void nextQuestion()
     {
+        this.cheated = false;
+
         Question currentQuestion = this.questions[questionIndex];
         this.questionTextView.setText(currentQuestion.getText());
 

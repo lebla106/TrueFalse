@@ -10,6 +10,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
     android:gravity="center"
     tools:context="edu.chapman.cpsc356.truefalse.activities.CheatActivity">
 
@@ -18,15 +19,40 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Not Yet Implemented, Jerk"
-        android:textSize="30sp"
+        android:text="@string/are_you_sure_cheat"
+        android:textSize="25sp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/holo_red_dark"
         />
 
-    <Button
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/arrow_left"
+            android:onClick="backTapped"
+            android:text="@string/back"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/holo_red_dark"
+            android:onClick="cheatTapped"
+            android:text="@string/cheat"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_cheat_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableStart="@drawable/arrow_left"
-        android:onClick="backTapped"
-        android:text="@string/back"/>
+        android:visibility="gone"
+        android:textSize="20sp"
+        android:layout_marginTop="20dp"
+        />
+
 
 </LinearLayout>
